@@ -250,7 +250,8 @@ void test_keys_extensional() {
 
   // testing get and set
   // the values corresponding to the .equals keys are both reference
-  equivalent assert(str == value3);
+  // equivalent strings
+  assert(str == value3);
   assert(str == str2);
 
   String *sameKey2 = new String("World");
@@ -273,9 +274,9 @@ int main(int argc, char **argv) {
   test_clear();
   test_size();
   test_keys();
+  test_keys_size();
   test_overwrite();
   test_equals_and_hash();
   test_keys_extensional();
-  test_keys_size();
   return 0;
 }
