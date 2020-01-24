@@ -1,3 +1,5 @@
+// lang::CwC
+
 #include "object.h"
 #include "sample_map.h"
 #include "string.h"
