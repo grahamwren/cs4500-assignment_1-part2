@@ -1,41 +1,40 @@
 #pragma once
+
+// lang::CwC
+
 #include "object.h"
 #include "string.h"
 
-class Array;
-
-const int NOT_IN_MAP = 1;
-
 /**
- * A dictionary of string keys and object values.  All keys and values are owned by the caller,
- * and none of the map's methods will modify them.  Keys which are .equals are equal, i.e.
- * the map will never contain two keys which are extensionally equivalent at the same time.
+ * A dictionary of string keys and object values.  All keys and values are owned
+ * by the caller, and none of the map's methods will modify them.  Keys which
+ * are .equals are equal, i.e. the map will never contain two keys which are
+ * extensionally equivalent at the same time.
  */
 class Map : public Object {
 public:
-
-  virtual ~Map() {};
+  virtual ~Map(){};
 
   /**
-   * Set the given pointer to the address of the corresponding value in this
-   * map.  Return `NOT_IN_MAP` if the key is not in this map.
+   * Returns the value which was set for this key.
+   * Returns nullptr if not in map.
    */
-  virtual int get(String* key, Object* const& obj) = 0;
+  virtual Object *get(String *key) = 0;
 
   /**
    * Set the value at the given key in this map.
    */
-  virtual void set(String* key, Object* value) = 0;
+  virtual void set(String *key, Object *value) = 0;
 
   /**
-   * Remove the value at the given key in this map.  Return `NOT_IN_MAP` if the key is not in this map.
+   * Remove the value at the given key in this map. No-op if value not in map.
    */
-  virtual int remove(String* key) = 0;
+  virtual void remove(String *key) = 0;
 
   /**
    * Determine if the given key is in this map.
    */
-  virtual bool has(String* key) = 0;
+  virtual bool has(String *key) = 0;
 
   /**
    * Remove all keys from this map.
@@ -48,9 +47,8 @@ public:
   virtual size_t size() = 0;
 
   /**
-   * Store keys in the given array.
+   * Store keys in the given array. Caller responsible for allocating at least
+   * Map::size() elements.
    */
-  virtual void keys(String** dest) = 0;
-
+  virtual void keys(String **dest) = 0;
 };
-

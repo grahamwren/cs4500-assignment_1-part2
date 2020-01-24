@@ -1,151 +1,177 @@
-#include<stdlib.h>
-#include<assert.h>
 #include "object.h"
 #include "sample_map.h"
 #include "string.h"
+#include <assert.h>
+#include <stdlib.h>
 
 void test_get() {
-  SampleMap theMap;
+  Map *theMap = ...;
 
-  String* key = new String("Hello");
-  String* value = new String("World");
+  String *key = new String("Hello");
+  String *value = new String("World");
 
-  theMap.set(key, value);
+  theMap->set(key, value);
 
-  String* str;
+  String *str = theMap->get(key);
 
-  int result = theMap.get(key, str);
-  assert(result == 0);
   assert(str == value);
 
-  String* wrongKey = new String("Goodbye");
-  int result2 = theMap.get(wrongKey, str);
-  assert(result == NOT_IN_MAP);
+  String *wrongKey = new String("Goodbye");
+  Object *result2 = theMap->get(wrongKey);
+  assert(result == nullptr);
   // str should not change on an invalid lookup
   assert(str == value);
 }
 
 void test_remove() {
-  SampleMap theMap;
+  Map *theMap = ...;
 
-  String* key = new String("Hello");
-  String* value = new String("World");
+  String *key = new String("Hello");
+  String *value = new String("World");
 
-  String* key2 = new String("Design");
-  String* value2 = new String("Recipe");
+  String *key2 = new String("Design");
+  String *value2 = new String("Recipe");
 
-  theMap.set(key, value);
-  theMap.set(key2, value2);
+  theMap->set(key, value);
+  theMap->set(key2, value2);
 
-  theMap.remove(key);
+  theMap->remove(key);
 
-  String* str = nullptr;
-  int result = theMap.get(key, str);
-
-  String* str2 = nullptr;
-  theMap.get(key2, str2);
+  String *str = theMap->get(key);
+  String *str2 = theMap->get(key2);
 
   // successfully removes one entry
-  assert(result == NOT_IN_MAP);
+  assert(str == nullptr);
   assert(str2 == value2);
 
-  String* wrongKey = new String("Goodbye");
-  int badResult = theMap.remove(wrongKey);
-  assert(badResult == NOT_IN_MAP);
+  String *wrongKey = new String("Goodbye");
+  theMap->remove(wrongKey); // not in map, so no-op (doesn't explode)
 }
 
 void test_has() {
-  SampleMap theMap;
+  Map *theMap = ...;
 
-  String* key = new String("Hello");
-  String* value = new String("World");
+  String *key = new String("Hello");
+  String *value = new String("World");
 
-  theMap.set(key, value);
+  theMap->set(key, value);
 
-  assert(theMap.has(key));
+  assert(theMap->has(key));
 
-  String* wrongKey = new String("Goodbye");
-  assert(!theMap.has(wrongKey));
+  String *wrongKey = new String("Goodbye");
+  assert(!theMap->has(wrongKey));
+}
+
+void test_has_set_null() {
+  Map *theMap = ...;
+
+  String *key = new String("Hello");
+
+  theMap->set(key, nullptr);
+  assert(theMap->has(key));
+
+  String *s = theMap->get(key);
+  assert(s == nullptr);
 }
 
 void test_clear() {
-  SampleMap theMap;
+  Map *theMap = ...;
 
-  String* key = new String("Hello");
-  String* value = new String("World");
+  String *key = new String("Hello");
+  String *value = new String("World");
 
-  String* key2 = new String("Design");
-  String* value2 = new String("Recipe");
+  String *key2 = new String("Design");
+  String *value2 = new String("Recipe");
 
-  theMap.set(key, value);
-  theMap.set(key2, value2);
+  theMap->set(key, value);
+  theMap->set(key2, value2);
 
-  theMap.clear();
+  theMap->clear();
 
-  String* str = nullptr;
-  int result = theMap.get(key, str);
-
-  String* str2 = nullptr;
-  int result2 = theMap.get(key2, str2);
+  String *str = theMap->get(key);
+  String *str2 = theMap->get(key2);
 
   // successfully clears all entries
-  assert(result == NOT_IN_MAP);
-  assert(result2 == NOT_IN_MAP);
+  assert(str == nullptr);
+  assert(str2 == nullptr);
 }
 
 void test_size() {
-  SampleMap theMap;
+  Map *theMap = ...;
 
-  assert(theMap.size() == 0);
+  assert(theMap->size() == 0);
 
-  String* key = new String("Hello");
-  String* value = new String("World");
+  String *key = new String("Hello");
+  String *value = new String("World");
 
-  theMap.set(key, value);
-  assert(theMap.size() == 1);
+  theMap->set(key, value);
+  assert(theMap->size() == 1);
 
-  theMap.remove(key);
-  assert(theMap.size() == 0);
+  theMap->remove(key);
+  assert(theMap->size() == 0);
 }
 
 void test_keys() {
-  SampleMap theMap;
+  Map *theMap = ...;
 
-  String* key = new String("Hello");
-  String* value = new String("World");
+  String *key = new String("Hello");
+  String *value = new String("World");
 
-  String* key2 = new String("Design");
-  String* value2 = new String("Recipe");
+  String *key2 = new String("Design");
+  String *value2 = new String("Recipe");
 
-  theMap.set(key, value);
-  theMap.set(key2, value2);
+  theMap->set(key, value);
+  theMap->set(key2, value2);
 
-  String** keys = new String*[2];
-  theMap.keys(keys);
+  String **keys = new String *[2];
+  theMap->keys(keys);
 
   // the keys array contains both keys in the map, in either order
   assert(keys[0] == key || keys[1] == key);
   assert(keys[0] == key2 || keys[1] == key2);
 }
 
+void test_keys_size() {
+  Map *theMap = ...;
+
+  String *s[5] = {
+      new String("1"), new String("2"), new String("3"),
+      new String("4"), new String("5"),
+  };
+
+  for (int i = 0; i < 5; i++) {
+    theMap->set(s[i], nullptr);
+  }
+
+  String *keys[10];
+  for (int i = 0; i < 10; i++)
+    keys[i] = nullptr;
+
+  theMap->keys(keys);
+
+  for (int i = 0; i < 5; i++)
+    assert(keys[i] == s[i]);
+  for (int i = 5; i < 10; i++)
+    assert(keys[i] == nullptr);
+}
+
 // make sure setting a key which was already in the map behaves properly
 void test_overwrite() {
-  SampleMap theMap;
+  Map *theMap = ...;
 
-  String* key = new String("Hello");
-  String* value = new String("World");
+  String *key = new String("Hello");
+  String *value = new String("World");
 
-  theMap.set(key, value);
+  theMap->set(key, value);
 
-  String* str = nullptr;
-  theMap.get(key, str);
+  String *str = theMap->get(key);
+  assert(str == value);
 
-  String* value2 = new String("Darkness");
+  String *value2 = new String("Darkness");
 
-  theMap.set(key, value2);
+  theMap->set(key, value2);
 
-  String* str2 = nullptr;
-  theMap.get(key, str2);
+  String *str2 = theMap->get(key);
 
   // the map successfully overwrites values
   assert(str2 == value2);
@@ -154,22 +180,22 @@ void test_overwrite() {
 }
 
 void test_equals_and_hash() {
-  SampleMap theMap1;
-  SampleMap theMap2;
+  Map *theMap1 = ...;
+  Map *theMap2 = ...;
 
   assert(theMap1.equals(&theMap2) && theMap2.equals(&theMap1));
 
-  String* key1 = new String("Hello");
-  String* key2 = new String("Hello");
+  String *key1 = new String("Hello");
+  String *key2 = new String("Hello");
 
-  String* value1 = new String("World");
-  String* value2 = new String("World");
+  String *value1 = new String("World");
+  String *value2 = new String("World");
 
-  String* key3 = new String("Design");
-  String* key4 = new String("Design");
+  String *key3 = new String("Design");
+  String *key4 = new String("Design");
 
-  String* value3 = new String("Recipe");
-  String* value4 = new String("Recipe");
+  String *value3 = new String("Recipe");
+  String *value4 = new String("Recipe");
 
   theMap1.set(key1, value1);
   theMap2.set(key2, value2);
@@ -191,70 +217,63 @@ void test_equals_and_hash() {
 // make sure keys that are .equals equivalent are treated the same,
 // for has, get, set, remove
 void test_keys_extensional() {
-  SampleMap theMap;
+  Map *theMap = ...;
 
-  String* key = new String("Hello");
-  String* value = new String("World");
+  String *key = new String("Hello");
+  String *value = new String("World");
 
-  String* key2 = new String("Design");
-  String* value2 = new String("Recipe");
+  String *key2 = new String("Design");
+  String *value2 = new String("Recipe");
 
-  theMap.set(key, value);
-  theMap.set(key2, value2);
+  theMap->set(key, value);
+  theMap->set(key2, value2);
 
-  String* sameKey = new String("Hello");
-  String* value3 = new String("Darkness");
+  String *sameKey = new String("Hello");
+  String *value3 = new String("Darkness");
 
   // testing has
   // make sure the map has both keys
-  assert(theMap.has(key));
-  assert(theMap.has(sameKey));
+  assert(theMap->has(key));
+  assert(theMap->has(sameKey));
 
   // set the value at sameKey, which is extensionally equivalent to key
-  theMap.set(sameKey, value3);
+  theMap->set(sameKey, value3);
 
   // make sure the map STILL has both keys
-  assert(theMap.has(key));
-  assert(theMap.has(sameKey));
-  
-  String* str;
-  theMap.get(key, str);
+  assert(theMap->has(key));
+  assert(theMap->has(sameKey));
 
-  String* str2;
-  theMap.get(sameKey, str2);
+  String *str = theMap->get(key);
+  String *str2 = theMap->get(sameKey);
 
   // testing get and set
-  // the values corresponding to the .equals keys are both reference equivalent
-  assert(str == value3);
+  // the values corresponding to the .equals keys are both reference
+  equivalent assert(str == value3);
   assert(str == str2);
 
-  String* sameKey2 = new String("World");
-  int result = theMap.remove(sameKey2);
+  String *sameKey2 = new String("World");
+  theMap->remove(sameKey2);
 
-  // the .equals key was in the map
-  assert(result == 0);
-
-  String* str3;
-  int result2 = theMap.get(key2, str3);
-
-  String* str4;
-  int result3 = theMap.get(sameKey2, str4);
+  String *str3 = theMap->get(key2);
+  String *str4 = theMap->get(sameKey2);
 
   // testing remove
   // both .equals keys are no longer in the map
-  assert(result2 == NOT_IN_MAP);
-  assert(result3 == NOT_IN_MAP);
+  assert(str3 == nullptr);
+  assert(str4 == nullptr);
 }
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
   test_get();
   test_remove();
   test_has();
+  test_has_set_null();
   test_clear();
   test_size();
   test_keys();
   test_overwrite();
   test_equals_and_hash();
   test_keys_extensional();
+  test_keys_size();
   return 0;
 }
