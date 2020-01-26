@@ -8,7 +8,8 @@
  * This represents a general object in the language.  It is the parent class of
  * all Objects.
  */
-class Object {
+class Object
+{
 public:
   virtual ~Object(){};
 
