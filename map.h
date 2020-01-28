@@ -22,7 +22,7 @@ public:
    * @param key the key to lookup the Object to retrieve
    * @return Object* the retrieved Object
    */
-  virtual Object *get(String *key) = 0;
+  virtual Object *get(Object *key) = 0;
 
   /**
    * @brief Sets the Object at the given @param key to the given @param value
@@ -32,7 +32,7 @@ public:
    * @param value the value to set at the given @param key
    * @return Object* the Object that was replaced
    */
-  virtual Object *set(String *key, Object *value) = 0;
+  virtual Object *set(Object *key, Object *value) = 0;
 
   /**
    * @brief Removes the Object at the given @param key and returns it
@@ -40,7 +40,7 @@ public:
    * @param key the key too lookup the Object to remove
    * @return Object* the removed Object
    */
-  virtual Object *remove(String *key) = 0;
+  virtual Object *remove(Object *key) = 0;
 
   /**
    * @brief Checks if the given key has a value in this Map
@@ -49,7 +49,7 @@ public:
    * @return true if the given key maps to a value in this Map
    * @return false if the given key does NOT map to a value in this Map
    */
-  virtual bool has(String *key) = 0;
+  virtual bool has(Object *key) = 0;
 
   /**
    * @brief Removes all keys from this map
@@ -68,7 +68,7 @@ public:
    * Store keys in the given array. Caller responsible for allocating at least
    * Map::size() elements.
    */
-  virtual void keys(String **dest) = 0;
+  virtual void keys(Object **dest) = 0;
 };
 
 /**
