@@ -7,7 +7,7 @@
 #include <stdlib.h>
 
 void test_get() {
-  Map *theMap = ...;
+  Map *theMap = new Map();
 
   String *key = new String("Hello");
   String *value = new String("World");
@@ -26,7 +26,7 @@ void test_get() {
 }
 
 void test_remove() {
-  Map *theMap = ...;
+  Map *theMap = new Map();
 
   String *key = new String("Hello");
   String *value = new String("World");
@@ -51,7 +51,7 @@ void test_remove() {
 }
 
 void test_has() {
-  Map *theMap = ...;
+  Map *theMap = new Map();
 
   String *key = new String("Hello");
   String *value = new String("World");
@@ -65,7 +65,7 @@ void test_has() {
 }
 
 void test_has_set_null() {
-  Map *theMap = ...;
+  Map *theMap = new Map();
 
   String *key = new String("Hello");
 
@@ -77,7 +77,7 @@ void test_has_set_null() {
 }
 
 void test_clear() {
-  Map *theMap = ...;
+  Map *theMap = new Map();
 
   String *key = new String("Hello");
   String *value = new String("World");
@@ -99,7 +99,7 @@ void test_clear() {
 }
 
 void test_size() {
-  Map *theMap = ...;
+  Map *theMap = new Map();
 
   assert(theMap->size() == 0);
 
@@ -114,7 +114,7 @@ void test_size() {
 }
 
 void test_keys() {
-  Map *theMap = ...;
+  Map *theMap = new Map();
 
   String *key = new String("Hello");
   String *value = new String("World");
@@ -134,7 +134,7 @@ void test_keys() {
 }
 
 void test_keys_size() {
-  Map *theMap = ...;
+  Map *theMap = new Map();
 
   String *s[5] = {
       new String("1"), new String("2"), new String("3"),
@@ -159,7 +159,7 @@ void test_keys_size() {
 
 // make sure setting a key which was already in the map behaves properly
 void test_overwrite() {
-  Map *theMap = ...;
+  Map *theMap = new Map();
 
   String *key = new String("Hello");
   String *value = new String("World");
@@ -182,8 +182,8 @@ void test_overwrite() {
 }
 
 void test_equals_and_hash() {
-  Map *theMap1 = ...;
-  Map *theMap2 = ...;
+  Map *theMap1 = new Map();
+  Map *theMap2 = new Map();
 
   assert(theMap1.equals(&theMap2) && theMap2.equals(&theMap1));
 
@@ -219,7 +219,7 @@ void test_equals_and_hash() {
 // make sure keys that are .equals equivalent are treated the same,
 // for has, get, set, remove
 void test_keys_extensional() {
-  Map *theMap = ...;
+  Map *theMap = new Map();
 
   String *key = new String("Hello");
   String *value = new String("World");
