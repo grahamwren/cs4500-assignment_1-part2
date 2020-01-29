@@ -7,10 +7,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-class String : public Object
-{
+class String : public Object {
 public:
   String() {}
+  String(const char *) {}
 
   ~String() {}
 

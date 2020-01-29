@@ -1,7 +1,7 @@
 // lang::CwC
 
+#include "map.h"
 #include "object.h"
-#include "sample_map.h"
 #include "string.h"
 #include <assert.h>
 #include <stdlib.h>
@@ -14,12 +14,12 @@ void test_get() {
 
   theMap->set(key, value);
 
-  String *str = theMap->get(key);
+  Object *str = theMap->get(key);
 
   assert(str == value);
 
   String *wrongKey = new String("Goodbye");
-  Object *result2 = theMap->get(wrongKey);
+  Object *result = theMap->get(wrongKey);
   assert(result == nullptr);
   // str should not change on an invalid lookup
   assert(str == value);
@@ -39,8 +39,8 @@ void test_remove() {
 
   theMap->remove(key);
 
-  String *str = theMap->get(key);
-  String *str2 = theMap->get(key2);
+  Object *str = theMap->get(key);
+  Object *str2 = theMap->get(key2);
 
   // successfully removes one entry
   assert(str == nullptr);
@@ -72,7 +72,7 @@ void test_has_set_null() {
   theMap->set(key, nullptr);
   assert(theMap->has(key));
 
-  String *s = theMap->get(key);
+  Object *s = theMap->get(key);
   assert(s == nullptr);
 }
 
@@ -90,8 +90,8 @@ void test_clear() {
 
   theMap->clear();
 
-  String *str = theMap->get(key);
-  String *str2 = theMap->get(key2);
+  Object *str = theMap->get(key);
+  Object *str2 = theMap->get(key2);
 
   // successfully clears all entries
   assert(str == nullptr);
@@ -125,7 +125,7 @@ void test_keys() {
   theMap->set(key, value);
   theMap->set(key2, value2);
 
-  String **keys = new String *[2];
+  Object **keys = new Object *[2];
   theMap->keys(keys);
 
   // the keys array contains both keys in the map, in either order
@@ -145,7 +145,7 @@ void test_keys_size() {
     theMap->set(s[i], nullptr);
   }
 
-  String *keys[10];
+  Object *keys[10];
   for (int i = 0; i < 10; i++)
     keys[i] = nullptr;
 
@@ -166,14 +166,14 @@ void test_overwrite() {
 
   theMap->set(key, value);
 
-  String *str = theMap->get(key);
+  Object *str = theMap->get(key);
   assert(str == value);
 
   String *value2 = new String("Darkness");
 
   theMap->set(key, value2);
 
-  String *str2 = theMap->get(key);
+  Object *str2 = theMap->get(key);
 
   // the map successfully overwrites values
   assert(str2 == value2);
@@ -185,7 +185,7 @@ void test_equals_and_hash() {
   Map *theMap1 = new Map();
   Map *theMap2 = new Map();
 
-  assert(theMap1.equals(&theMap2) && theMap2.equals(&theMap1));
+  assert(theMap1->equals(theMap2) && theMap2->equals(theMap1));
 
   String *key1 = new String("Hello");
   String *key2 = new String("Hello");
@@ -199,21 +199,21 @@ void test_equals_and_hash() {
   String *value3 = new String("Recipe");
   String *value4 = new String("Recipe");
 
-  theMap1.set(key1, value1);
-  theMap2.set(key2, value2);
+  theMap1->set(key1, value1);
+  theMap2->set(key2, value2);
 
-  theMap1.set(key3, value3);
-  theMap2.set(key4, value4);
+  theMap1->set(key3, value3);
+  theMap2->set(key4, value4);
 
   // equal maps are equal
-  assert(theMap1.equals(&theMap2) && theMap2.equals(&theMap1));
+  assert(theMap1->equals(theMap2) && theMap2->equals(theMap1));
 
-  theMap1.remove(key1);
-  theMap2.remove(key4);
+  theMap1->remove(key1);
+  theMap2->remove(key4);
   // unequal maps are unequal
-  assert(!theMap1.equals(&theMap2) && !theMap2.equals(&theMap1));
+  assert(!theMap1->equals(theMap2) && !theMap2->equals(theMap1));
   // unequal maps have unequal hashes
-  assert(theMap1.hash() != theMap2.hash());
+  assert(theMap1->hash() != theMap2->hash());
 }
 
 // make sure keys that are .equals equivalent are treated the same,
@@ -245,8 +245,8 @@ void test_keys_extensional() {
   assert(theMap->has(key));
   assert(theMap->has(sameKey));
 
-  String *str = theMap->get(key);
-  String *str2 = theMap->get(sameKey);
+  Object *str = theMap->get(key);
+  Object *str2 = theMap->get(sameKey);
 
   // testing get and set
   // the values corresponding to the .equals keys are both reference
@@ -257,8 +257,8 @@ void test_keys_extensional() {
   String *sameKey2 = new String("World");
   theMap->remove(sameKey2);
 
-  String *str3 = theMap->get(key2);
-  String *str4 = theMap->get(sameKey2);
+  Object *str3 = theMap->get(key2);
+  Object *str4 = theMap->get(sameKey2);
 
   // testing remove
   // both .equals keys are no longer in the map
