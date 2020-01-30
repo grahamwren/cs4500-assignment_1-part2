@@ -207,13 +207,13 @@ void test_equals_and_hash() {
 
   // equal maps are equal
   assert(theMap1->equals(theMap2) && theMap2->equals(theMap1));
+  // equal maps have equal hashes
+  assert(theMap1->hash() == theMap2->hash());
 
   theMap1->remove(key1);
   theMap2->remove(key4);
   // unequal maps are unequal
   assert(!theMap1->equals(theMap2) && !theMap2->equals(theMap1));
-  // unequal maps have unequal hashes
-  assert(theMap1->hash() != theMap2->hash());
 }
 
 // make sure keys that are .equals equivalent are treated the same,
