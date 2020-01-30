@@ -254,7 +254,7 @@ void test_keys_extensional() {
   assert(str == value3);
   assert(str == str2);
 
-  String *sameKey2 = new String("World");
+  String *sameKey2 = new String("Design");
   theMap->remove(sameKey2);
 
   Object *str3 = theMap->get(key2);
