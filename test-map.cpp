@@ -5,6 +5,7 @@
 #include "string.h"
 #include <assert.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 void test_get() {
   Map *theMap = new Map();
